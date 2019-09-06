@@ -1,0 +1,51 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://mss-registry:8761/eureka/"
+  instance:
+#    instance-id: mss-gateway
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+    prefer-ip-address: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000
+
+ribbon:
+  ReadTimeout: 20000
+  ConnectTimeout: 5000
+
+feign:
+  hystrix:
+    enabled: true
+
+zuul:
+  routes:
+    auth-service:
+      path: /uaa/**
+      serviceId: auth
+      stripPrefix: true
+      sensitiveHeaders:
+    admin-service:
+      path: /admin/**
+      serviceId: admin
+      stripPrefix: true
+      sensitiveHeaders:
+    api-b:
+      path: /api-b/**
+      url: http://localhost:8765/
+    simple163:
+      url: https://www.baidu.com/
+    registry:
+      url: http://mss-registry:8761/
+server:
+  port: 4000
+  tomcat:
+    max-http-header-size: 8192
+spring:
+  application:
+    name: mss-gateway

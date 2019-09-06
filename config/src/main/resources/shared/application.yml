@@ -1,0 +1,68 @@
+eureka:
+  instance:
+    prefer-ip-address: true
+    non-secure-port: ${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://mss-registry:8761/eureka/
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 100000
+ribbon:
+  ConnectTimeout: 60000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+  ReadTimeout: 30000
+feign:
+  hystrix:
+    enabled: true
+#logging:
+#  level:
+#    com:
+#      fsti: DEBUG
+#    org:
+#      hibernate:
+#        SQL: DEBUG
+#      springframework:
+#        security: INFO
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    initialSize: 5
+    maxActive: 8
+    maxPoolPreparedStatementPerConnectionSize: 20
+    maxWait: 60000
+    minEvictableIdleTimeMillis: 300000
+    minIdle: 5
+    password: root
+    poolPreparedStatements: true
+    testOnBorrow: false
+    testOnReturn: false
+    testWhileIdle: true
+    timeBetweenEvictionRunsMillis: 60000
+    url: "jdbc:mysql://mss-mysql:3306/oauth2?characterEncoding=UTF-8&useSSL=false"
+    username: root
+    validationQuery: "select 1 from dual"
+  jpa:
+    database: MYSQL
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  mvc:
+    dispatch-options-request: true
+security:
+  oauth2:
+    client:
+      access-token-uri: http://mss-auth:4000/uaa/oauth/token
+      user-authorization-uri: http://mss-auth:4000/uaa/oauth/authorize
+      client-id: webApp
+      #clientSecret: 123456
+      #scope: app
+    resource:
+      user-info-uri: http://mss-auth:4000/uaa/user
+      prefer-token-info: false

@@ -1,0 +1,29 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://mss-registry:8761/eureka/"
+  instance:
+    instance-id: admin
+    lease-expiration-duration-in-seconds: 10
+    lease-renewal-interval-in-seconds: 5
+    prefer-ip-address: true
+server:
+  port: 6000
+spring:
+  datasource:
+    url: jdbc:mysql://mss-mysql:3306/oauth2?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: qq837011700
+    driver-class-name: com.mysql.jdbc.Driver
+    min-idle: 5
+    max-idle: 10
+  mvc:
+    dispatch-options-request: true
+  jpa:
+    database: MYSQL
+    generate-ddl: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  application:
+    name: admin

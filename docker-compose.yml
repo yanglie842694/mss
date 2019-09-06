@@ -1,0 +1,37 @@
+version: "3.4"
+services:
+    db:
+        image: mysql:latest
+        container_name: mysql
+        networks:
+            - backend
+        ports:
+            - "3306:3306"
+        restart: always
+        volumes:
+            - /home/vagrant/docker/mysql/data:/var/lib/mysql
+            - /home/vagrant/docker/mysql/config/my.cnf:/etc/my.cnf
+
+    mss-config:
+        image: 192.168.33.10:5000/mss/config:latest
+        container_name: mss-config
+        networks:
+            - backend
+        ports:
+            - "8888:8888"
+        pid: "host"
+        restart: always
+    mss-registry:
+        image: 192.168.33.10:5000/mss/registry:latest
+        container_name: mss-registry
+        depends_on:
+            - mss-config
+        ports:
+            - "8761:8761"
+        networks:
+            - backend
+        pid: "host"
+        restart: always
+
+networks:
+    backend:

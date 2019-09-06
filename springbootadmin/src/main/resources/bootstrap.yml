@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: mss-springbootadmin
+  cloud:
+    config:
+      uri: http://mss-config:8888
+      fail-fast: true
+      password: ${CONFIG_SERVICE_PASSWORD:root}
+      username: user
+
+  jackson:
+    default-property-inclusion: non_null
+    #property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+    #date-format: yyyy-MM-dd HH:mm:ss

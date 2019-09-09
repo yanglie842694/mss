@@ -60,9 +60,10 @@ security:
     client:
       access-token-uri: http://mss-auth:4000/uaa/oauth/token
       user-authorization-uri: http://mss-auth:4000/uaa/oauth/authorize
-      client-id: webApp
-      #clientSecret: 123456
-      #scope: app
+      client-id: server
+      scope: server
+      clientSecret: 123456
     resource:
-      user-info-uri: http://mss-auth:4000/uaa/user
+      user-info-uri: http://mss-auth:7000/oauth/check_token
       prefer-token-info: false
+      filter-order: 3

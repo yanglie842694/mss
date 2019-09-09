@@ -1,11 +1,16 @@
 package cn.yl.auth.service;
 
+import cn.yl.auth.client.AdminClient;
+import cn.yl.auth.dao.SysPrivilegeRepository;
 import cn.yl.auth.dao.SysUserRepository;
 import cn.yl.auth.dao.UserRepository;
+import cn.yl.auth.entity.SysPrivilege;
 import cn.yl.auth.entity.SysUser;
 import cn.yl.auth.entity.UserEntity;
+import cn.yl.common.vo.StaffVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,15 +18,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
-    private UserRepository userRepository;
+    private SysPrivilegeRepository sysPrivilegeRepository;
 
     @Autowired
     private SysUserRepository sysUserRepository;
+
+    @Autowired
+    private AdminClient adminClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -35,6 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         boolean accountNonExpired = true; // 过期性 :true:没过期 false:过期
         boolean credentialsNonExpired = true; // 有效性 :true:凭证有效 false:凭证无效
         boolean accountNonLocked = true; // 锁定性 :true:未锁定 false:已锁定
+
 //        UserVo userVo = new UserVo();
 //        BeanUtils.copyProperties(userResult.getData(),userVo);
 //        Result<List<RoleVo>> roleResult = roleService.getRoleByUserId(userVo.getId());
@@ -57,9 +67,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 //                }
 //            }
 //        }
+//        StaffVO sysUser = adminClient.findByUsername(username).getData();
         SysUser sysUser = sysUserRepository.findByUsername(username);
-        User user = new User(sysUser.getUsername(), sysUser.getPassword(),
+        List<SysPrivilege> privileges = sysPrivilegeRepository.findAllPrivilegeByUserId(sysUser.getId());
+        privileges.forEach(sysPrivilege -> grantedAuthorities.add(new SimpleGrantedAuthority(sysPrivilege.getPriviCode())));
+
+        return new User(sysUser.getUsername(), sysUser.getPassword(),
                 enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuthorities);
-        return user;
     }
 }

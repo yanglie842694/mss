@@ -1,10 +1,8 @@
 package cn.yl.auth.config;
 
-import cn.yl.auth.client.AdminClient;
 import cn.yl.auth.dao.SysUserRepository;
 import cn.yl.auth.entity.SysUser;
 import cn.yl.auth.service.UserDetailsServiceImpl;
-import cn.yl.common.vo.StaffVO;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -48,8 +46,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private SysUserRepository sysUserRepository;
+
     @Autowired
-    private AdminClient adminClient;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -59,7 +58,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Bean
     public ClientDetailsService getClients() {
         JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
-        jdbcClientDetailsService.setPasswordEncoder(passwordEncoder());
+        jdbcClientDetailsService.setPasswordEncoder(passwordEncoder);
         return jdbcClientDetailsService;
     }
 
@@ -104,20 +103,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
 
-    @SuppressWarnings("deprecation")
-    @Bean
-    public static PasswordEncoder passwordEncoder() {
-        Map encoders = new HashMap<>();
-        encoders.put("bcrypt", new BCryptPasswordEncoder());
-        return new DelegatingPasswordEncoder("bcrypt", encoders);
-    }
-
-
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security.tokenKeyAccess("permitAll()");
         security.checkTokenAccess("isAuthenticated()");
-        security.allowFormAuthenticationForClients().passwordEncoder(passwordEncoder());
+        security.allowFormAuthenticationForClients().passwordEncoder(passwordEncoder);
     }
 
 }

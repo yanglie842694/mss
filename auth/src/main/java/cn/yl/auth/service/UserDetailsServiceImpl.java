@@ -1,13 +1,9 @@
 package cn.yl.auth.service;
 
-import cn.yl.auth.client.AdminClient;
 import cn.yl.auth.dao.SysPrivilegeRepository;
 import cn.yl.auth.dao.SysUserRepository;
-import cn.yl.auth.dao.UserRepository;
 import cn.yl.auth.entity.SysPrivilege;
 import cn.yl.auth.entity.SysUser;
-import cn.yl.auth.entity.UserEntity;
-import cn.yl.common.vo.StaffVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,8 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private SysUserRepository sysUserRepository;
 
-    @Autowired
-    private AdminClient adminClient;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

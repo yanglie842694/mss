@@ -1,14 +1,20 @@
 spring:
   application:
-    name: mss-springbootadmin
+      name: mss-sbtadmin
   cloud:
-    config:
-      uri: http://mss-config:8888
-      fail-fast: true
-      password: ${CONFIG_SERVICE_PASSWORD:root}
-      username: user
-
+    nacos:
+      config:
+        encode: UTF-8
+        file-extension: yaml
+        group: mss
+        namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
+        server-addr: "localhost:8848"
+      discovery:
+        group: mss
+        namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
+        server-addr: "localhost:8848"
+        service: mss-sbtadmin
   jackson:
     default-property-inclusion: non_null
-    #property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
-    #date-format: yyyy-MM-dd HH:mm:ss
+  profiles:
+    active: ${@profiles.active@:dev}

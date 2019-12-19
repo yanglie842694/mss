@@ -2,64 +2,19 @@ spring:
   application:
     name: mss-admin
   cloud:
-    config:
-      uri: http://mss-config:8888
-      fail-fast: true
-      password: ${CONFIG_SERVICE_PASSWORD:root}
-      username: user
-
+    nacos:
+      config:
+        encode: UTF-8
+        file-extension: yaml
+        group: mss
+        namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
+        server-addr: "localhost:8848"
+      discovery:
+        group: mss
+        namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
+        server-addr: "localhost:8848"
+        service: mss-admin
   jackson:
     default-property-inclusion: non_null
-    #property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
-    #date-format: yyyy-MM-dd HH:mm:ss
-#eureka:
-#  instance:
-#    prefer-ip-address: true
-#    non-secure-port: ${server.port}
-#  client:
-#    serviceUrl:
-#      defaultZone: http://mss-registry:8761/eureka/
-#hystrix:
-#  command:
-#    default:
-#      execution:
-#        isolation:
-#          thread:
-#            timeoutInMilliseconds: 10000
-#ribbon:
-#  ConnectTimeout: 60000
-#  MaxAutoRetries: 0
-#  MaxAutoRetriesNextServer: 1
-#  ReadTimeout: 30000
-#feign:
-#  hystrix:
-#    enabled: true
-##logging:
-##  level:
-##    com:
-##      fsti: DEBUG
-##    org:
-##      hibernate:
-##        SQL: DEBUG
-##      springframework:
-##        security: INFO
-#spring:
-#  datasource:
-#    driver-class-name: com.mysql.jdbc.Driver
-#    initialSize: 5
-#    maxActive: 8
-#    maxPoolPreparedStatementPerConnectionSize: 20
-#    maxWait: 60000
-#    minEvictableIdleTimeMillis: 300000
-#    minIdle: 5
-#    password: qq837011700
-#    poolPreparedStatements: true
-#    testOnBorrow: false
-#    testOnReturn: false
-#    testWhileIdle: true
-#    timeBetweenEvictionRunsMillis: 60000
-#    url: "jdbc:mysql://mss-mysql:3306/oauth2?characterEncoding=UTF-8&useSSL=false"
-#    username: root
-#    validationQuery: "select 1 from dual"
-#  mvc:
-#    dispatch-options-request: true
+  profiles:
+    active: ${@profiles.active@:dev}

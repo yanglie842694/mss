@@ -3,6 +3,7 @@ package cn.yl.auth;
 import cn.yl.auth.vo.UserVO;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,7 +17,7 @@ import java.util.Map;
 /**
  * @author 杨列
  */
-@SpringBootApplication
+@SpringCloudApplication
 @EnableDiscoveryClient
 @RestController
 public class AuthApplication {

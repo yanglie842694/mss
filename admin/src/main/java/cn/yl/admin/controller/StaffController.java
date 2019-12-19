@@ -14,7 +14,7 @@ public class StaffController {
     private StaffRepository staffRepository;
 
     @RequestMapping(value = "/current/{username}",method = RequestMethod.GET)
-    public @ResponseBody PlatResult<StaffVO> getStaff(@PathVariable("username") String username){
+    public PlatResult getStaff(@PathVariable("username") String username){
         Staff staff = staffRepository.findByUsername(username);
         System.out.println(staff.toString());
         StaffVO staffVO = new StaffVO();

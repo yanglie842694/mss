@@ -7,11 +7,11 @@ spring:
         encode: UTF-8
         file-extension: yaml
         group: mss
-        namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
+        namespace: 82273e11-77e9-48e5-ac82-c2216ee57403
         server-addr: "localhost:8848"
       discovery:
         group: mss
-        namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
+        namespace: 82273e11-77e9-48e5-ac82-c2216ee57403
         server-addr: "localhost:8848"
         service: mss-auth
   jackson:

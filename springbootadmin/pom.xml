@@ -48,45 +48,12 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
-            <plugins>
-                <plugin>
-                    <groupId>com.spotify</groupId>
-                    <artifactId>dockerfile-maven-plugin</artifactId>
-                    <version>1.4.10</version>
-                    <executions>
-                        <execution>
-                            <id>build-image</id>
-                            <phase>package</phase>
-                            <goals>
-                                <goal>build</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>push-image</id>
-                            <phase>deploy</phase>
-                            <goals>
-                                <goal>build</goal>
-                                <goal>push</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                    <configuration>
-                        <repository>192.168.33.10:5000/mss/${project.artifactId}</repository>
-                        <!--                        <dockerDirectory>./</dockerDirectory>-->
-                        <!--                        <dockerHost>192.168.33.10:2375</dockerHost>-->
-                        <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-                        <tag>latest</tag>
-                        <!--<buildArgs>-->
-                        <!--<JAR_FILE>${project.artifactId}.jar</JAR_FILE>-->
-                        <!--</buildArgs>-->
-                        <!--<serverId>docker-registry</serverId>-->
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

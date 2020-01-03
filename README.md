@@ -38,6 +38,7 @@ mvn clean package install
 ##### nacos修改mysql支持8.x
 [从5.7升级到8.x](https://blog.csdn.net/weixin_34233421/article/details/94331205)
 [Nacos1.1.4支持Mysql8.0](https://blog.csdn.net/u012480990/article/details/102780908)
+
 #####build nacos
 ```shell script
 mvn -Prelease-nacos -DskipTests clean install -U

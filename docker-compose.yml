@@ -1,8 +1,10 @@
 version: "3.4"
 services:
-    db:
-        image: mysql:latest
-        container_name: mysql
+    mss-mysql:
+        image: mss-mysql:latest
+        container_name: mss-mysql
+        extra_hosts:
+          - "mss-mysql:192.168.33.10"
         networks:
             - backend
         ports:
@@ -11,15 +13,94 @@ services:
         volumes:
             - /home/vagrant/docker/mysql/data:/var/lib/mysql
             - /home/vagrant/docker/mysql/config/my.cnf:/etc/my.cnf
-
+            - /home/vagrant/docker/mysql/init:/docker-entrypoint-initdb.d/
+        environment:
+            MYSQL_ROOT_PASSWORD: 'qq837011700'
+        command: --default-authentication-plugin=mysql_native_password #解决外部无法访问
     mss-nacos:
-        image: 192.168.33.10:5000/mss-nacos:latest
+        image: mss-nacos:latest
         container_name: mss-nacos
+        extra_hosts:
+            - "mss-mysql:192.168.33.10"
         networks:
             - backend
         ports:
             - "8848:8848"
         restart: always
+        volumes:
+            - "./wait-for.sh:/wait-for.sh"
+            - /home/vagrant/docker/nacos_data/logs:/nacos/logs
+        entrypoint: "sh /wait-for.sh mss-mysql:3306 -- sh /nacos/bin/startup.sh -m standalone"
+    mss-redis:
+        image: mss-redis:latest
+        container_name: mss-redis
+        networks:
+          - backend
+        ports:
+          - "6379:6379"
+        restart: always
+        volumes:
+          - /home/vagrant/docker/redis/redis.conf:/usr/local/etc/redis/redis.conf
+          - /home/vagrant/docker/redis/data:/data
+    mss-auth:
+        image: mss-auth:latest
+        container_name: mss-auth
+        networks:
+            - backend
+        extra_hosts:
+          - "mss-mysql:192.168.33.10"
+          - "mss-nacos:192.168.33.10"
+        ports:
+            - "7000:7000"
+        restart: always
+        volumes:
+            - "./wait-for.sh:/wait-for.sh"
+        entrypoint: "sh /wait-for.sh mss-mysql:3306 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/auth.jar"
+    mss-gateway:
+        image: mss-gateway:latest
+        container_name: mss-gateway
+        networks:
+          - backend
+        ports:
+          - "4000:4000"
+        restart: always
+        extra_hosts:
+          - "mss-auth:192.168.33.10"
+          - "mss-nacos:192.168.33.10"
+
+        volumes:
+          - "./wait-for.sh:/wait-for.sh"
+        entrypoint: "sh /wait-for.sh mss-auth:7000 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/gateway.jar"
+    mss-admin:
+        image: mss-admin:latest
+        container_name: mss-admin
+        networks:
+          - backend
+        ports:
+          - "6000:6000"
+        restart: always
+        extra_hosts:
+          - "mss-auth:192.168.33.10"
+          - "mss-nacos:192.168.33.10"
+        volumes:
+          - "./wait-for.sh:/wait-for.sh"
+        entrypoint: "sh /wait-for.sh mss-auth:7000 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/admin.jar"
+    mss-springbootadmin:
+        image: mss-springbootadmin:latest
+        container_name: mss-springbootadmin
+        networks:
+            - backend
+        ports:
+            - "6000:6000"
+        restart: always
+        extra_hosts:
+            - "mss-auth:192.168.33.10"
+            - "mss-nacos:192.168.33.10"
+        volumes:
+            - "./wait-for.sh:/wait-for.sh"
+        entrypoint: "sh /wait-for.sh mss-auth:7000 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/springbootadmin.jar"
+
 
 networks:
     backend:
+        driver: bridge

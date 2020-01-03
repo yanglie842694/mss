@@ -8,11 +8,11 @@ spring:
         file-extension: yaml
         group: mss
         namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
-        server-addr: "localhost:8848"
+        server-addr: "mss-nacos:8848"
       discovery:
         group: mss
         namespace: 86db27ed-947a-4670-b15a-a36d3f3a7015
-        server-addr: "localhost:8848"
+        server-addr: "mss-nacos:8848"
         service: mss-gateway
   jackson:
     default-property-inclusion: non_null

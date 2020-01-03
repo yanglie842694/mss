@@ -50,12 +50,14 @@ services:
         extra_hosts:
           - "mss-mysql:192.168.33.10"
           - "mss-nacos:192.168.33.10"
+        depends_on:
+          - mss-nacos
         ports:
             - "7000:7000"
         restart: always
         volumes:
             - "./wait-for.sh:/wait-for.sh"
-        entrypoint: "sh /wait-for.sh mss-mysql:3306 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/auth.jar"
+        entrypoint: "sh /wait-for.sh mss-nacos:8848 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/auth.jar"
     mss-gateway:
         image: mss-gateway:latest
         container_name: mss-gateway
@@ -64,10 +66,11 @@ services:
         ports:
           - "4000:4000"
         restart: always
+        depends_on:
+          - mss-auth
         extra_hosts:
           - "mss-auth:192.168.33.10"
           - "mss-nacos:192.168.33.10"
-
         volumes:
           - "./wait-for.sh:/wait-for.sh"
         entrypoint: "sh /wait-for.sh mss-auth:7000 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/gateway.jar"
@@ -79,6 +82,8 @@ services:
         ports:
           - "6000:6000"
         restart: always
+        depends_on:
+          - mss-auth
         extra_hosts:
           - "mss-auth:192.168.33.10"
           - "mss-nacos:192.168.33.10"
@@ -91,14 +96,15 @@ services:
         networks:
             - backend
         ports:
-            - "6000:6000"
+            - "6200:6200"
         restart: always
+        depends_on:
+          - mss-nacos
         extra_hosts:
-            - "mss-auth:192.168.33.10"
             - "mss-nacos:192.168.33.10"
         volumes:
             - "./wait-for.sh:/wait-for.sh"
-        entrypoint: "sh /wait-for.sh mss-auth:7000 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/springbootadmin.jar"
+        entrypoint: "sh /wait-for.sh mss-nacos:8848 -- java -Xmx200m -Duser.timezone=GMT+08 -jar /app/springbootadmin.jar"
 
 
 networks:

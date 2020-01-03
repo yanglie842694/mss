@@ -4,7 +4,6 @@ import cn.yl.auth.dao.SysUserRepository;
 import cn.yl.auth.entity.SysUser;
 import cn.yl.auth.service.UserDetailsServiceImpl;
 import com.alibaba.fastjson.JSON;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,6 +20,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,19 +33,19 @@ import java.util.Map;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-    @Autowired
+    @Resource
     private AuthenticationManager authenticationManager;
 
-    @Autowired
+    @Resource
     private DataSource dataSource;
 
-    @Autowired
+    @Resource
     private UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
+    @Resource
     private SysUserRepository sysUserRepository;
 
-    @Autowired
+    @Resource
     private PasswordEncoder passwordEncoder;
 
     @Override

@@ -1,7 +1,6 @@
 package cn.yl.auth.config;
 
 import cn.yl.auth.service.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,6 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.annotation.Resource;
+
 
 /**
  * @author 杨列
@@ -23,10 +24,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
+    @Resource
     private UserDetailsServiceImpl userDetailsService;
 
-    @Autowired
+    @Resource
     private PasswordEncoder passwordEncoder;
 
 

@@ -2,9 +2,6 @@ package cn.yl.auth;
 
 import cn.yl.auth.vo.UserVO;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cloud.client.SpringCloudApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
@@ -23,8 +20,7 @@ import java.util.Map;
 @SpringCloudApplication
 @EnableDiscoveryClient
 @RestController
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
-@ComponentScan(basePackages = "cn.yl.auth.dao")
+@ComponentScan(basePackages = "cn.yl.auth")
 public class AuthApplication {
 
     public static void main(String[] args) {
@@ -32,7 +28,7 @@ public class AuthApplication {
     }
     @Bean
     public static PasswordEncoder passwordEncoder() {
-        Map encoders = new HashMap<>();
+        Map<String,PasswordEncoder> encoders = new HashMap<>(1);
         encoders.put("bcrypt", new BCryptPasswordEncoder());
         return new DelegatingPasswordEncoder("bcrypt",encoders);
     }

@@ -18,3 +18,5 @@ spring:
     default-property-inclusion: non_null
   profiles:
     active: ${@profiles.active@:dev}
+  main:
+    allow-bean-definition-overriding: true

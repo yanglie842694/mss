@@ -69,7 +69,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter</artifactId>
         </dependency>
-
     </dependencies>
 
     <build>

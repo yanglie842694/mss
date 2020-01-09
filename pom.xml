@@ -30,7 +30,7 @@
         <dockerfile.registry.name>mss</dockerfile.registry.name>
         <dockerfile-maven-version>1.4.8</dockerfile-maven-version>
         <swagger.version>2.9.2</swagger.version>
-        <dozer.version>5.4.0</dozer.version>
+        <dozer.version>5.5.1</dozer.version>
         <docker.registry.server>docker.registry.server:5000</docker.registry.server>
         <spring-cloud.version>Hoxton.RELEASE</spring-cloud.version>
         <alibaba-cloud.version>2.1.1.RELEASE</alibaba-cloud.version>
@@ -81,6 +81,29 @@
             <artifactId>spring-web</artifactId>
             <version>5.2.2.RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sf.dozer</groupId>
+            <artifactId>dozer</artifactId>
+            <version>${dozer.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+        <!-- swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
         </dependency>
 
     </dependencies>

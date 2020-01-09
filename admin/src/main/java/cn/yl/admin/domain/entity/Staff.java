@@ -8,7 +8,7 @@ import java.util.Date;
  * @author 杨列
  */
 @Entity
-@Table(name = "SYS_USER")
+@Table(name = "sys_user")
 public class Staff implements Serializable {
     private static final long serialVersionUID = -1L;
 

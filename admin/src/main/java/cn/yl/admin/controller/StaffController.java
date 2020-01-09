@@ -1,26 +1,29 @@
 package cn.yl.admin.controller;
 
-import cn.yl.admin.domain.entity.Staff;
-import cn.yl.admin.repository.StaffRepository;
+import cn.yl.admin.service.StaffService;
+import cn.yl.common.vo.PageableParam;
 import cn.yl.common.vo.PlatResult;
-import cn.yl.common.vo.StaffVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+@Api("用户接口")
 @RestController
 public class StaffController {
-    @Autowired
-    private StaffRepository staffRepository;
 
+    @Resource
+    private StaffService staffService;
+
+    @ApiOperation(value = "根据用户名获取用户的信息",notes = "查询数据库中的记录",httpMethod = "GET")
+    @ApiImplicitParam(name = "username",value = "用户名",required = true,dataType = "String",paramType = "query")
     @RequestMapping(value = "/current/{username}",method = RequestMethod.GET)
     public PlatResult getStaff(@PathVariable("username") String username){
-        Staff staff = staffRepository.findByUsername(username);
-        System.out.println(staff.toString());
-        StaffVO staffVO = new StaffVO();
-        staffVO.setId(staff.getId());
-        staffVO.setUsername(staff.getUsername());
-        return PlatResult.success(staffVO);
+        return PlatResult.success(staffService.getStaff(username));
     }
 
     @GetMapping("/test")
@@ -32,5 +35,12 @@ public class StaffController {
     @PreAuthorize("hasAnyAuthority('query_intf')")
     public PlatResult<?> test2(){
         return PlatResult.success("权限校验成功");
+    }
+
+    @ApiOperation(value = "获取用户列表（分页）",notes = "分页查询用户",httpMethod = "GET")
+    @GetMapping("/user/list")
+    public PlatResult getUserList(PageableParam pageableParam){
+        Pageable pageable = PageRequest.of(pageableParam.getPage(), pageableParam.getSize());
+        return PlatResult.success(staffService.page(pageable));
     }
 }

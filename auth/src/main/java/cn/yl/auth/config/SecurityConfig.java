@@ -47,10 +47,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .requestMatchers()
-//                .antMatchers( "/oauth/**","/uaa/**").permitAll()
+
 //                .anyRequest().authenticated()
                 .antMatchers("/oauth/**","/uaa/**").and()
                 .authorizeRequests()
+                .antMatchers( "/v2/api-docs", "/swagger-resources/**", "/configuration/ui",
+                        "/swagger-ui.html", "/configuration/security", "/webjars/**").permitAll()
                 .antMatchers("/oauth/**").authenticated()
                 .and()
                 .csrf().disable();
@@ -58,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**", "/plugins/**", "/favicon.ico","/actuator/**");
+        web.ignoring().antMatchers("/css/**", "/js/**", "/plugins/**", "/favicon.ico","/actuator/**", "/v2/api-docs", "/swagger-resources/**", "/configuration/ui",
+                "/swagger-ui.html", "/configuration/security", "/webjars/**");
     }
 
     @Bean

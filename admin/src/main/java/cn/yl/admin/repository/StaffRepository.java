@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface StaffRepository extends JpaRepository<Staff, Integer>, JpaSpecificationExecutor<Staff> {
 
     Staff findByUsername(String username);
+
+
 }

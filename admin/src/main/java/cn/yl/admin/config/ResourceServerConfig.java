@@ -16,15 +16,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/v2/api-docs", "/swagger-resources/**",
                 "/swagger-resources","/swagger-resources/configuration/security",
-                "/swagger-ui.html","/course/coursebase/**","/current/**").permitAll().anyRequest().authenticated()
-                .and().csrf().disable();
+                "/swagger-ui.html","/course/coursebase/**").permitAll().anyRequest().authenticated()
+                .and().csrf();
     }
 
     @Primary
     @Bean
     public RemoteTokenServices tokenService(){
         RemoteTokenServices remoteTokenServices = new RemoteTokenServices();
-        remoteTokenServices.setCheckTokenEndpointUrl("http://mss-auth:7000/oauth/check_token");
+        remoteTokenServices.setCheckTokenEndpointUrl("http://mss-auth:4000/uaa/oauth/check_token");
         remoteTokenServices.setClientId("server");
         remoteTokenServices.setClientSecret("123456");
         return remoteTokenServices;
